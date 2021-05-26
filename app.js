@@ -8,6 +8,9 @@ app.listen(3000);
 
 // Response and request object
 app.get('/', (req, res) => {
-    
-    res.send('<p>this is the homepage</p>');
+   res.sendFile('./views/index.html', { root: __dirname });
+});
+
+app.get('/about', (req, res) => {
+    res.sendFile('./views/about.html', { root: __dirname });
 });
