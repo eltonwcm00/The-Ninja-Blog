@@ -71,3 +71,9 @@ const _ = require('lodash');
 
     greet();
     greet();
+
+
+/* Redirect */
+app.get('/about-us', (req, res) => {
+    res.redirect('/about');
+});
