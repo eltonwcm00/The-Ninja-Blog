@@ -1,4 +1,5 @@
 const express = require('express');
+const morgan = require('morgan')
 
 /* Express app */
 const app = express();
@@ -8,6 +9,13 @@ app.set('view engine', 'ejs');
 
 /* Listen for request */
 app.listen(3000);
+
+/* Static files Middleware */
+app.use(express.static('public'));
+
+/* 3rd party Middleware */
+// https://www.npmjs.com/package/morgan
+app.use(morgan('tiny'));
 
 app.get('/', (req, res) => {
     
@@ -31,8 +39,6 @@ app.get('/blogs/create', (req, res) => {
 })
 
 /* 404 Page */
-// Not scope to any particular URL and will fire the function regardless 
-// of the URL, if the code reaches at this point 
 app.use((req, res) => {
     // res.status(404).sendFile('./views/404.html', { root: __dirname });
     res.status(404).render('404', { title: '404' });

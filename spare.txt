@@ -63,15 +63,14 @@ server.listen(3000, 'localhost', () => {
 /* Lodash library*/
 const _ = require('lodash');
 
-// Lodash
-    const num = _.random(0, 20);
-    console.log(num);
-    const greet = _.once(() => {
-        console.log('hello');
-    });
+const num = _.random(0, 20);
+console.log(num);
+const greet = _.once(() => {
+    console.log('hello');
+});
 
-    greet();
-    greet();
+greet();
+greet();
 
 
 
@@ -80,4 +79,21 @@ const _ = require('lodash');
 /* Redirect */
 app.get('/about-us', (req, res) => {
     res.redirect('/about');
+});
+
+
+
+
+/* Middleware */
+app.use((req, res, next) => {
+    console.log('New request was made :');
+    console.log('Host', req.hostname);
+    console.log('Path', req.path);
+    console.log('Method', req.method);
+    next();
+});
+
+app.use((req, res, next) => {
+    console.log('In the next piece of middlware');
+    next();
 });
