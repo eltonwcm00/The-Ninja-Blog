@@ -1,8 +1,11 @@
 const express = require('express');
-const morgan = require('morgan')
+const morgan = require('morgan');
 
 /* Express app */
 const app = express();
+
+/* MongoDB connection string*/
+const dbURI = 'mongodb+srv://elton:1234@ninjablog.mkarm.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
 
 /* Register the view engine with .ejs */
 app.set('view engine', 'ejs');
