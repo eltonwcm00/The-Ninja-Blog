@@ -18,19 +18,17 @@ mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
 /* Register the view engine with .ejs */
 app.set('view engine', 'ejs');
 
-/* Static files Middleware */
+/* Middleware, 3rd party Middleware & Static files */
 app.use(express.static('public'));
-
-/* 3rd party Middleware */
-// https://www.npmjs.com/package/morgan
-app.use(morgan('tiny'));
+app.use(express.urlencoded( {extended: true })); // Take all the URL encoded data, pass into an object,that we can use in the reqyest object 
+app.use(morgan('tiny')); // https://www.npmjs.com/package/morgan
 
 app.get('/', (req, res) => {
     res.redirect('/blogs');
 });
 
 /* Basic Routes */ 
-// READ : Display all blog routes, cycle through the index.ejs
+// READ : Display all blog routes by cycle through the index.ejs
 app.get('/blogs', (req, res) => {
     Blog.find().sort({createdAt: -1 })
         .then((result) => {
@@ -40,6 +38,21 @@ app.get('/blogs', (req, res) => {
             console.log(err);
         })
 });
+
+//CREATE : POST request to the server by cycle through the create.ejs
+app.post('/blogs', (req, res) => {
+    // console.log(req.body);
+    const blog = new Blog(req.body);
+    
+    blog.save()
+        .then((result) => {
+            // Redirect user upon success
+            res.redirect('/blogs');
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+})
 
 app.get('/about', (req, res) => {
     // res.sendFile('./views/about.html', { root: __dirname });
