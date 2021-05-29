@@ -32,7 +32,7 @@ app.get('/', (req, res) => {
 app.get('/blogs', (req, res) => {
     Blog.find().sort({createdAt: -1 })
         .then((result) => {
-            res.render('index', { title: 'All Blogs', blogs: result })
+            res.render('index', { title: 'All Blogs', blogs: result });
         })
         .catch((err) => {
             console.log(err);
@@ -52,7 +52,22 @@ app.post('/blogs', (req, res) => {
         .catch((err) => {
             console.log(err);
         })
-})
+});
+
+//READ : Read the corresponding id blog post when it is clicked (Route Parameter)
+app.get('/blogs/:id', (req, res) => {
+    // Catch the ./id from the URL
+    const id = req.params.id;
+
+    Blog.findById(id)
+        .then((result) => {
+            // Render the blog details page
+            res.render('details', {blog: result, title: 'Blog Details'});
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+});
 
 app.get('/about', (req, res) => {
     // res.sendFile('./views/about.html', { root: __dirname });
@@ -61,10 +76,10 @@ app.get('/about', (req, res) => {
 
 app.get('/blogs/create', (req, res) => {
     res.render('create', { title: 'Create' });
-})
+});
 
 /* 404 Page */
 app.use((req, res) => {
     // res.status(404).sendFile('./views/404.html', { root: __dirname });
     res.status(404).render('404', { title: '404' });
-})
+});
