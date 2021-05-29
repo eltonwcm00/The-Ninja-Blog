@@ -21,56 +21,24 @@ app.set('view engine', 'ejs');
 /* Static files Middleware */
 app.use(express.static('public'));
 
-/* Mongoose and MongoDB sandbox routes */
-
-// INSERT
-app.get('/add-blog', (req, res) => {
-    const blog = new Blog({
-        title: 'New blog',
-        snippet: 'About my new blog',
-        body: 'More about my new blog'
-    });
-
-    blog.save().then((result) => {
-        res.send(result);
-    }).catch((err) => {
-        console.log(err);
-    });
-})
-
-// READ
-app.get('/all-blogs', (req, res) => {
-    Blog.find().then((result) => {
-        res.send(result);
-    }).catch((err) => {
-        console.log(err);
-    });
-})
-
-// READ (Filter)
-app.get('/single-blog', (req, res) => {
-    Blog.findById('60b2369e5d61f9113c23aff9').then((result) => {
-        res.send(result);
-    }).catch((err) => {
-        console.log(err);
-    });
-})
-
-
 /* 3rd party Middleware */
 // https://www.npmjs.com/package/morgan
 app.use(morgan('tiny'));
 
 app.get('/', (req, res) => {
-    
-    const blogs = [
-        {title: 'Yoshi finds eggs', snippet: 'Lorem ipsum dolor sit amet consectetur'},
-        {title: 'Mario finds stars', snippet: 'Lorem ipsum dolor sit amet consectetur'},
-        {title: 'How to defeat bowser', snippet: 'Lorem ipsum dolor sit amet consectetur'},
-    ];
+    res.redirect('/blogs');
+});
 
-    // res.sendFile('./views/index.html', { root: __dirname });
-    res.render('index', { title: 'Home', blogs: blogs });
+/* Basic Routes */ 
+// READ : Display all blog routes, cycle through the index.ejs
+app.get('/blogs', (req, res) => {
+    Blog.find().sort({createdAt: -1 })
+        .then((result) => {
+            res.render('index', { title: 'All Blogs', blogs: result })
+        })
+        .catch((err) => {
+            console.log(err);
+        })
 });
 
 app.get('/about', (req, res) => {
