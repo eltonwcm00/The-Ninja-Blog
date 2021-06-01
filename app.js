@@ -41,10 +41,6 @@ app.get('/about', (req, res) => {
     res.render('about', { title: 'About' });
 })
 
-app.get('/blogs/create', (req, res) => {
-    res.render('create', { title: 'Create' });
-})
-
 /* Blog Routes */
 app.use(blogRoutes);
 // app.use('/blogs', blogRoutes);
